@@ -12,7 +12,7 @@ image bg livingroom night = "images/livingroom_night.jpeg"
 
 label start:
 
-    play music "night"
+    # play music "night"
 
     scene bg livingroom night
     with fade
@@ -44,16 +44,52 @@ label start:
     annie "I suppose it's up to me to clean up around here."
 
     # task: use stain remover to clean the carpet
-    jump clean_carpet
+    $ choiceA = False
+    $ choiceB = False
+    menu stain_remover:
+        "You find a bottle of stain remover."
+
+        "Offer Larry a drink." if choiceA == False:
+            $ choiceA = True
+            "His teeth are now cleaner than ever! And he's hydrated."
+            jump stain_remover
+        
+        "Drink it yourself." if choiceB == False:
+            $ choiceB = True
+            "Tastes like orange juice. You get a stomach ache."
+            jump stain_remover
+
+        "Scrub the carpet.":
+            jump clean_carpet
 
 label clean_carpet:
 
     annie "Much better! ... What's that stench, though?"
     annie "Larry, sorry to embarrass you, but you smell like you haven't showered in quite a while."
-    annie "Not to worry, though! Please feel free to use the hallway bathroom to freshen up."
-    annie "Let me help you out--I see you're having some trouble getting up this morning."
 
     # task: drag larry's body into the bathtub
+    $ choiceB = False
+    $ choiceC = False
+    menu bathtub:
+        "Larry's being an inconsiderate guest."
+
+        "Drag him into the bathroom.":
+            annie "Not to worry, though! Please feel free to use the hallway bathroom to freshen up."
+            annie "Let me help you out--I see you're having some trouble getting up this morning."
+            jump bathroom_1
+        
+        "Drag him outside." if choiceB == False:
+            $ choiceB = True
+            "The body is heavy, but you manage to push it out the front door."
+            "Police officers see that you're in possession of a life-size human piñata and arrest you for suspicious activity."
+            jump bathtub
+
+        "Drag him onto the couch." if choiceC == False:    
+            $ choiceC = True
+            "You help Larry get comfortable on the couch with a blanket and some pillows."
+            "It doesn't help the smell."
+            jump bathtub
+    
     jump bathroom_1
 
 label bathroom_1:
@@ -62,10 +98,7 @@ label bathroom_1:
 
     annie "Oh dear, we've got a bit of a pickle. You don't quite fit inside the bathtub, Larry."
     annie "Hmm ... let me think."
-    annie "Ah, I've got it! Let me find something that'll help you rest in pieces."
-
-    # objective pop-up: find the right tool to chop larry up
-
+    annie "Ah, I've got it! Let me find my tools."
     annie "No, don't worry, it won't be any trouble at all! I promised to be a good host, didn't I? Only the finest hospitality for you, Larry."
 
     jump kitchen_1
@@ -75,27 +108,38 @@ label kitchen_1:
     scene bg kitchen
     with fade
 
-    menu:
-        "Choose an item for Annie's task."
+    # task: find the right tool to chop larry up
+    $ choiceA = False
+    $ choiceB = False
+    $ choiceD = False
+    menu find_tool:
+        "Find something that will help Larry rest in pieces."
 
-        "Scissors"
-            # jump scissors
-        "Blender"
-            # jump blender
-        "Rolling pin"
-            # jump rolling_pin
+        "Scissors" if choiceA == False:
+            $ choiceA = True
+            annie "I think I'll need some bigger scissors than these."
+            jump find_tool
+
+        "Blender" if choiceB == False:
+            $ choiceB = True
+            annie "I don't think Larry will fit inside this ... yet."
+            jump find_tool
+
         "Meat cleaver":
+            annie "This will work wonderfully!"
             jump meat_cleaver
 
+        "Rolling pin" if choiceD == False:
+            $ choiceD = True
+            "You're not strong enough to flatten him."
+            jump find_tool
+        
+
 label meat_cleaver:
-
-    annie "This will work wonderfully!"
-
     scene bg bathroom
     with fade
 
-    # task: chop larry up into pieces
-
+    annie "Alright, we're about to get started--please hold still!"
     annie "There you go, dear! Now you fit inside the bathtub very nicely."
 
     # sound: doorbell, pounding on door
@@ -140,17 +184,76 @@ label couch_1:
 
     brad "Hey, uh, sorry to interrupt the investigation, but would you mind if I used your restroom? Drank a lot of coffee with my donuts this mornin' and I'm startin' to regret it."
 
-    annie "Of course! There's a bathroom down this hallway. Just give me a moment to make sure everything's in working order."
+    annie "Of course! There's a bathroom down this hallway."
     
-    jump bathroom_2
+    $ choice_bathroom = False
+    menu brad_bathroom:
+        "What should you do?"
+        
+        "Let Brad use the bathroom." if choice_bathroom == False:
+            $ choice_bathroom = True
+            annie "Go right ahead, Officer Brad."
+            jump bathroom_fail
 
-label bathroom_2:
-    # task enter the bathroom and pull the shower curtain
+        "Tell Brad to wait while you check the bathroom.":
+            annie "Just give me a moment to make sure everything's in working order."
+            jump bathroom_success
+
+label bathroom_fail:
+    
+    hide brad   # brad leaves the living room
+
+    chad "Right, uh, so I'd like to ask you a few more questions."
+    
+    annie "No problem at all!"
+
+    chad "Do you know what time Larry arrived at this apartment, two days ago?"
+
+    annie "Well, I was away visting my son, so I don't know exactly when."
+
+    show brad   # brad returns
+
+    brad "Hey, Chad, I think I found our guy."
+
+    chad "What?"
+
+    brad "He's in the bathtub."
+
+    chad "God, Brad, did you walk in while someone was showering again?"
+
+    brad "That was one time! And no, Larry is--well, he's not alive anymore."
+
+    chad "Brad ... you actually did something helpful for once. I--I think I might cry."
+
+    "No getting out of this one. Brad and Chad arrest you on the spot as their prime suspect."
+
+    jump brad_bathroom
+
+label bathroom_success:
     scene bg bathroom
     with fade
 
-    scene bg bathroom shower curtain
-    with fade
+    # task: enter the bathroom and pull the shower curtain
+    $ choiceA = False
+    $ choiceC = False
+    menu pull_shower_curtain:
+        "Larry's still lying there in the bathtub."
+
+        "Spray some air freshener." if choiceA == False:
+            $ choiceA = True
+            "Not strong enough. The body is still pretty visible."
+            jump pull_shower_curtain
+
+        "Pull the shower curtain.":
+            annie "That should do it! They won't notice Larry now."
+            scene bg bathroom shower curtain    # change art for shower curtain
+            with fade
+            jump couch_2
+
+        "Flush Larry's parts down the toilet." if choiceC == False:
+            "They won't fit. Maybe after some hydrofluoric acid ..."
+            $ choiceC = True
+            jump pull_shower_curtain
 
     jump couch_2
 
@@ -187,7 +290,32 @@ label couch_2:
 
     chad "No, Brad, we don't. We've discussed this before. If you would just--"
 
-    # objective pop-up: get the arms, put in trashbag
+    # task: get the arms and put them in a trashbag
+    $ choiceA = False
+    $ choiceB = False
+    menu get_arms:
+        "They've been talking for a while ..."
+
+        "Ask a question." if choiceA == False:
+            $ choiceA = True
+            annie "Sorry to interject, but how do you two feel about our current economic and political system?"
+            "Brad and Chad turn to look at you, their faces blank."
+            "With no explanation, they arrest you for asking questions."
+            jump get_arms
+
+        "Just let them talk." if choiceB == False:
+            $ choiceB = True
+            "They keep talking."
+            "..."
+            "You die of boredom."
+            jump get_arms
+
+        "Slip away.":
+            "This is your chance to get rid of some evidence."
+            "You go to the bathroom, put Larry's arms in a trashbag, and return. Your absence goes unnoticed."
+            jump dispose_arms
+
+label dispose_arms:
 
     chad "If we're going to make any kind of progress, I need you to--"
 
@@ -204,16 +332,32 @@ label couch_2:
 
     hide brad
 
-    annie "Officer Chad, do you happen to like dogs?"
+    # task: ask chad if he likes dogs
+    $ choice_cat = False
+    $ choice_bird = False
+    menu chad_likes_animals:
+        "You have an opening to talk to Chad. What do you say?"
+        
+        "Do you like cats?" if choice_cat == False:
+            $ choice_cat = True
+            chad "I've rescued a couple cats on the job. Do you own a cat?"
+            annie "No, I don't."
+            jump chad_likes_animals
 
-    chad "Well, yes, I do, but I think we're all getting off track here and I'd really--"
-    
-    annie "Perfect! You don't mind helping to feed the neighbor's dog, do you?"
-    annie "I'll just grab a bowl from the kitchen. Wait here a moment, please!"
+        "Do you like dogs?":
+            chad "Well, yes, I do, but I think we're all getting off track here and I'd really--"
+            annie "Perfect! You don't mind helping to feed the neighbor's dog, do you?"
+            annie "I'll just grab a bowl from the kitchen. Wait here a moment, please!"
+            jump kitchen_blender
 
-    jump kitchen_2
+        "Do you like birds?": if choice_bird == False:
+            $ choice_bird = True
+            chad "Yes, I love birdwatching, actually."
+            annie "But haven't you heard that birds are actually government drones?"
+            chad "Wait, what?"
+            jump chad_likes_animals   
 
-label kitchen_2:
+label kitchen_blender:
     
     scene kitchen
 

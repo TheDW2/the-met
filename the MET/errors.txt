@@ -2,13 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 85: Line is followed by a block, despite not being a menu choice. Did you forget a colon at the end of the line?
-    "Meat cleaver"
-                  ^
+File "game/script.rpy", line 243: expected statement.
+    choiceA = True
+            ^
 
-File "game/script.rpy", line 105: expected ':' not found.
-    label front_door
-                    ^
+File "game/script.rpy", line 255: expected statement.
+    choiceC = True
+            ^
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Tue Sep 20 19:59:19 2022
+Mon Sep 26 11:39:29 2022
