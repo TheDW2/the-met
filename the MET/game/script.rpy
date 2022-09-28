@@ -359,11 +359,32 @@ label dispose_arms:
 
 label kitchen_blender:
     
-    scene kitchen
+    scene bg kitchen       # change background to kitchen
+    with fade
+
+    "You take Larry's torso from the bathtub and bring it to the kitchen."
 
     # task: blend torso and put into a large dog bowl
+    $ choice_processor = False
+    $ choice_chop = False
+    menu blend_torso:
+        "How can you make some fresh ground meat for your neighbor's dog?"
 
-    jump couch_3
+        "Use the blender.":
+            "You stuff Larry's entire torso into your industrial-size blender."
+            annie "There we go, a fresh, healthy meal!"
+            jump couch_3
+
+        "Use the food processor." if choice_processor == False:
+            $ choice_processor = True
+            "The food processor's blades spin furiously, and you hear a dangerous rattling sound."
+            "The food processor breaks."
+            jump blend_torso
+        
+        "Chop it by hand." if choice_chop == False:
+            $ choice_chop = True
+            "It's too difficult to saw through the ribcage."
+            jump blend_torso
 
 label couch_3:
 
@@ -382,7 +403,7 @@ label couch_3:
 
     brad "I'll even go with you to help!"
 
-    # objective pop-up: kitchen to bake pie
+    "Now's a good time to get rid of Larry's head."
 
     jump kitchen_3
 
@@ -390,6 +411,28 @@ label kitchen_3:
 
     scene kitchen
     with fade
+
+    # task: bake the head into something
+    $ choice_pie = False
+    $ choice_cake = False
+    $ choice_cupcakes = False
+    menu bake_something:
+        "You're in a baking mood. What dessert would you like to bake Larry's head into?"
+
+        "Pie":
+            annie "A pie sounds lovely!"
+            $ choice_pie = True
+            jump couch_4
+        
+        "Cake":
+            annie "You can't go wrong with a good cake!"
+            $ choice_cake = True
+            jump couch_4
+
+        "Cupcakes":
+            $ choice_cupcakes = True
+            annie "There's never a bad time for cupcakes!"
+            jump couch_4
 
     jump couch_4
 
@@ -421,33 +464,106 @@ label kitchen_4:
     scene kitchen
     with fade
 
-    chad "Say, uh ... what kind of meat is this?"
+    "You bring Larry's legs into the kitchen and haul them onto the counter."
 
-    annie "Some fresh fish filets I picked up from the farmer's market."
+    # task: convince police that it's just fish
+    $ choice_chicken = False
+    $ choice_crocodile = False
+    menu what_meat:
+        chad "Say, uh ... what kind of meat is this?"
+        
+        "Fish":
+            jump wrap_legs
+        
+        "Chicken" if choice_chicken == False:
+            $ choice_chicken = True
+            jump chicken_fail
+
+        "Crocodile" if choice_crocodile == False:
+            $ choice_crocodile = True
+            jump crocodile_fail
+
+label chicken_fail:
+
+    annie "These are fresh legs--fresh chicken legs from the local grocery store."
+
+    chad "Hey, Brad, do chickens have 3-foot long legs?"
+
+    brad "Maybe it's a buffalo chicken. I've seen buffalo chicken wings, but never buffalo chicken legs, though."
+
+    chad "I'm pretty sure buffalo chickens are endangered animals ..."
+    chad "Ma'am, I'm gonna have to arrest you for hunting an endangered species."
+
+    "You're arrested on account of endangering near-extinct buffalo chickens."
+    jump what_meat
+
+label crocodile_fail:
+
+    annie "It's a nice cut of fresh crocodile meat."
+
+    brad "Hey, where are you getting crocodiles from? This isn't Florida ..."
+
+    chad "That's an astute observation, Brad. Crocodiles aren't a common grocery store item."
+
+    brad ""
+
+    jump what_meat
+
+label wrap_legs:        
+
+    annie "Some fresh salmon filets I picked up from the farmer's market."
 
     brad "They sure look fresh to me! Real nice for an autumn barbeque, don't you think, Chad?"
 
     chad "Uh, looks like the fishmonger missed a couple of fish scales."
-
     chad "(Are those ... ? They look a bit like toenails.)"
 
     brad "Honestly, I'm gettin' pretty hungry myself, just thinkin' about barbeques."
 
     # ding sound
 
-    annie "Oh! I nearly forgot about my pie! Wait one moment, please."
+    if choice_pie == True:
+        annie "Oh! I nearly forgot about my pie! Wait one moment, please."
 
-    # annie takes pie out of oven
+        # annie takes pie out of oven
 
-    annie "Please try a slice! It's the least I can do to thank you both for helping me out so much today."
+        annie "Please try a slice! It's the least I can do to thank you both for helping me out so much today."
 
-    brad "That pie sure looks good, ma'am. What do you think, Chad?"
+        brad "That pie sure looks good, ma'am. What do you think, Chad?"
 
-    chad "It's not strictly professional to eat on the job ... but it has been a long few hours since breakfast."
+        chad "It's not strictly professional to eat on the job ... but it has been a long few hours since breakfast."
 
-    annie "Please, I insist! I've been told that my meat pies are fantastic."
+        annie "Please, I insist! I've been told that my meat pies are fantastic."
 
-    # brad, chad enjoy the pie
+        # brad, chad enjoy the pie
+    elif choice_cake == True
+        annie "Oh! I nearly forgot about my cake! Wait one moment, please."
+
+        # annie takes cake out of oven
+
+        annie "Please try a slice! It's the least I can do to thank you both for helping me out so much today."
+
+        brad "That cake sure looks good, ma'am. What do you think, Chad?"
+
+        chad "It's not strictly professional to eat on the job ... but it has been a long few hours since breakfast."
+
+        annie "Please, I insist! I've been told that my cakes are fantastic."
+
+        # brad, chad enjoy the cake
+    elif choice_cupcakes == True:
+        annie "Oh! I nearly forgot about my cupcakes! Wait one moment, please."
+
+        # annie takes cupcakes out of oven
+
+        annie "Please try a cupcake! It's the least I can do to thank you both for helping me out so much today."
+
+        brad "Those cupcakes sure look good, ma'am. What do you think, Chad?"
+
+        chad "It's not strictly professional to eat on the job ... but it has been a long few hours since breakfast."
+
+        annie "Please, I insist! I've been told that my cupcakes are fantastic."
+
+        # brad, chad enjoy the cupcakes
 
     brad "That was delicious!"
     brad "Well, I guess we had better get goin' back to the station. Did we get all the evidence we needed Chad?"
