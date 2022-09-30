@@ -10,6 +10,14 @@ define brad = Character("Brad")
 # Declare music
 define opening_theme = "<loop 0.0>audio/OpeningMet.wav"
 define main_theme = "<loop 0.0>audio/MainMETTheme.wav"
+define arrival = "<from 3.0 to 5.0>audio/Arrival.wav"
+define body_thud = "audio/BodyThud.wav"
+define drink = "audio/Drink.wav"
+define impact_crunch = "audio/ImpactCrunch.wav"
+define saw = "audio/Saw.wav"
+define shower_curtain_sound = "audio/ShowerCurtainPull.wav"
+define siren = "audio/Siren.wav"
+define spray = "audio/Spray.wav"
 
 # Declare sound effects
 
@@ -21,6 +29,7 @@ image bathroom_larry = "images/bathroom_larry.PNG"
 image bathroom_chopped = "images/bathroom_chopped.PNG"
 image bathroom_curtain = "images/bathroom_curtain.PNG"
 image spooktober_logo = "images/spooktober_logo.PNG"
+image black_screen = "images/black_screen.jpg"
 # image kitchen = 
 
 # Declare character art
@@ -46,6 +55,8 @@ label night:
 
     show larry_scared
     
+    play sound body_thud
+
     larry "Wait, please! Please, stop!"
     larry "I'll give you anything--money, you want money? I'll give you all the money you want!"
     larry "I'll give you anything you want, just tell me what you want! I'm begging you ... I have a family!"
@@ -56,7 +67,11 @@ label night:
 
     mystery "The way I see it, I'm doing her a favor."
 
-    # thud of body hitting the ground
+    scene black_screen
+    with fade
+
+    play sound impact_crunch
+    pause 1.0
 
     mystery "Well ..."
     mystery "That's been quite enough excitement for one night!"
@@ -83,11 +98,13 @@ label daytime:
 
         "Offer Larry a drink." if choice_larry == False:
             $ choice_larry = True
+            play sound drink
             "His teeth are now cleaner than ever! And he's hydrated."
             jump stain_remover
         
         "Drink it yourself." if choice_yourself == False:
             $ choice_yourself = True
+            play sound drink
             "Tastes like orange juice. You get a stomach ache."
             jump stain_remover
 
@@ -131,6 +148,9 @@ label outside_fail:
     with fade
 
     "The body is heavy, but you manage to push it out the front door."
+    
+    play sound siren
+
     "Police officers see that you're in possession of a life-size human piñata and arrest you for suspicious activity."
 
     scene livingroom_dawn
@@ -187,12 +207,19 @@ label meat_cleaver:
     with fade
 
     annie "Alright, we're about to get started--please hold still!"
-    annie "There you go, dear! Now you fit inside the bathtub very nicely."
+
+    scene black_screen
+    with fade
+    play sound saw
+    pause 3.0
 
     scene bathroom_chopped
     with fade
+    annie "There you go, dear! Now you fit inside the bathtub very nicely."
 
     # sound: doorbell, pounding on door
+    play sound arrival
+    pause 1.0
 
     annie "Oh, that must be the police! I've been expecting them. Sit tight, Larry, will you?"
 
@@ -297,10 +324,12 @@ label bathroom_success:
 
         "Spray some air freshener." if choice_fresh == False:
             $ choice_fresh = True
+            play sound spray
             "Not strong enough. The body is still pretty visible."
             jump pull_shower_curtain
 
         "Pull the shower curtain.":
+            play sound pull_shower_curtain
             scene bathroom_curtain   # change art for shower curtain
             with fade
             annie "That should do it! They won't notice Larry now."
@@ -599,6 +628,7 @@ label chicken_fail:
     scene black_screen
     with fade
 
+    play sound siren
     "You're arrested on account of endangering near-extinct buffalo chickens."
 
     scene kitchen
@@ -625,6 +655,7 @@ label crocodile_fail:
     scene black_screen
     with fade
 
+    play sound siren
     "They arrest you for being suspicious."
 
     scene kitchen
