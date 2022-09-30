@@ -350,7 +350,7 @@ label dispose_arms:
             annie "I'll just grab a bowl from the kitchen. Wait here a moment, please!"
             jump kitchen_blender
 
-        "Do you like birds?": if choice_bird == False:
+        "Do you like birds?" if choice_bird == False:
             $ choice_bird = True
             chad "Yes, I love birdwatching, actually."
             annie "But haven't you heard that birds are actually government drones?"
@@ -505,7 +505,13 @@ label crocodile_fail:
 
     chad "That's an astute observation, Brad. Crocodiles aren't a common grocery store item."
 
-    brad ""
+    brad "Isn't that a little bit suspicious?"
+
+    chad "You're right, Brad! And what do we do with suspicious people, again?"
+
+    brad "We arrest them! Right, Chad?"
+
+    "They arrest you for being suspicious."
 
     jump what_meat
 
@@ -536,7 +542,7 @@ label wrap_legs:
         annie "Please, I insist! I've been told that my meat pies are fantastic."
 
         # brad, chad enjoy the pie
-    elif choice_cake == True
+    elif choice_cake == True:
         annie "Oh! I nearly forgot about my cake! Wait one moment, please."
 
         # annie takes cake out of oven
@@ -587,5 +593,5 @@ label ending:
     annie "Now, time to brew up a nice cup of tea."
 
     "the end."
-
+        
     return

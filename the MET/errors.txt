@@ -2,13 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 243: expected statement.
-    choiceA = True
-            ^
-
-File "game/script.rpy", line 255: expected statement.
-    choiceC = True
-            ^
+File "game/script.rpy", line 353: end of line expected.
+    "Do you like birds?": if choice_bird == False:
+                          ^
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Mon Sep 26 11:39:29 2022
+Wed Sep 28 11:44:29 2022
