@@ -2,9 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 353: end of line expected.
-    "Do you like birds?": if choice_bird == False:
-                          ^
+File "game/script.rpy", line 84: expected statement.
+    choice_outside = False
+                   ^
+
+File "game/script.rpy", line 85: expected statement.
+    choice_couch = False
+                 ^
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Wed Sep 28 11:44:29 2022
+Thu Sep 29 20:40:16 2022

@@ -7,17 +7,27 @@ define mystery = Character("?")
 define chad = Character("Chad")
 define brad = Character("Brad")
 
+# Declare audio
+define opening_theme = "<loop 0.0>audio/OpeningMet.wav"
+define main_theme = "<loop 0.0>audio/MainMETTheme.wav"
+
 # Declare images
-image bg livingroom night = "images/livingroom_night.jpeg"
+image livingroom_night = "images/livingroom_night.PNG"
+image livingroom_dawn = "images/livingroom_dawn.PNG"
+image livingroom_day = "images/livingroom_day.PNG"
+# image bathroom = 
+# image kitchen = 
+
+# Declare character art
+# image larry_scared = 
 
 label start:
+    play music opening_theme
 
-    # play music "night"
-
-    scene bg livingroom night
+    scene livingroom_night
     with fade
 
-    show larry scared
+    show larry_scared
     
     larry "Wait, please! Please, stop!"
     larry "I'll give you anything--money, you want money? I'll give you all the money you want!"
@@ -34,7 +44,12 @@ label start:
     mystery "Well ..."
     mystery "That's been quite enough excitement for one night!"
 
-    scene bg livingroom day
+    jump daytime
+
+label daytime:
+    play music main_theme
+
+    scene livingroom_dawn
     with fade
 
     annie "Good morning, Larry, dear! Did you have a good night's rest?"
@@ -44,18 +59,18 @@ label start:
     annie "I suppose it's up to me to clean up around here."
 
     # task: use stain remover to clean the carpet
-    $ choiceA = False
-    $ choiceB = False
+    $ choice_larry = False
+    $ choice_yourself = False
     menu stain_remover:
         "You find a bottle of stain remover."
 
-        "Offer Larry a drink." if choiceA == False:
-            $ choiceA = True
+        "Offer Larry a drink." if choice_larry == False:
+            $ choice_larry = True
             "His teeth are now cleaner than ever! And he's hydrated."
             jump stain_remover
         
-        "Drink it yourself." if choiceB == False:
-            $ choiceB = True
+        "Drink it yourself." if choice_yourself == False:
+            $ choice_yourself = True
             "Tastes like orange juice. You get a stomach ache."
             jump stain_remover
 
@@ -63,13 +78,17 @@ label start:
             jump clean_carpet
 
 label clean_carpet:
-
+    scene livingroom_dawn
+    with fade
     annie "Much better! ... What's that stench, though?"
     annie "Larry, sorry to embarrass you, but you smell like you haven't showered in quite a while."
+    jump move_body
+
+label move_body:
 
     # task: drag larry's body into the bathtub
-    $ choiceB = False
-    $ choiceC = False
+    $ choice_outside = False
+    $ choice_couch = False
     menu bathtub:
         "Larry's being an inconsiderate guest."
 
@@ -78,23 +97,34 @@ label clean_carpet:
             annie "Let me help you out--I see you're having some trouble getting up this morning."
             jump bathroom_1
         
-        "Drag him outside." if choiceB == False:
-            $ choiceB = True
-            "The body is heavy, but you manage to push it out the front door."
-            "Police officers see that you're in possession of a life-size human piñata and arrest you for suspicious activity."
-            jump bathtub
+        "Drag him outside." if choice_outside == False:
+            $ choice_outside = True
+            jump outside_fail
 
-        "Drag him onto the couch." if choiceC == False:    
-            $ choiceC = True
+        "Drag him onto the couch." if choice_couch == False:    
+            $ choice_couch = True
             "You help Larry get comfortable on the couch with a blanket and some pillows."
             "It doesn't help the smell."
             jump bathtub
     
     jump bathroom_1
 
+label outside_fail:
+    scene black_screen
+    with fade
+
+    "The body is heavy, but you manage to push it out the front door."
+    "Police officers see that you're in possession of a life-size human piñata and arrest you for suspicious activity."
+
+    scene livingroom_dawn
+    with fade
+
+    jump bathtub
+
 label bathroom_1:
 
-    scene bg bathroom
+    scene bathroom
+    with fade
 
     annie "Oh dear, we've got a bit of a pickle. You don't quite fit inside the bathtub, Larry."
     annie "Hmm ... let me think."
@@ -105,23 +135,23 @@ label bathroom_1:
 
 label kitchen_1:
     
-    scene bg kitchen
+    scene kitchen
     with fade
 
     # task: find the right tool to chop larry up
-    $ choiceA = False
-    $ choiceB = False
-    $ choiceD = False
+    $ choice_scissors = False
+    $ choice_blender = False
+    $ choice_rolling = False
     menu find_tool:
         "Find something that will help Larry rest in pieces."
 
-        "Scissors" if choiceA == False:
-            $ choiceA = True
+        "Scissors" if choice_scissors == False:
+            $ choice_scissors = True
             annie "I think I'll need some bigger scissors than these."
             jump find_tool
 
-        "Blender" if choiceB == False:
-            $ choiceB = True
+        "Blender" if choice_blender == False:
+            $ choice_blender = True
             annie "I don't think Larry will fit inside this ... yet."
             jump find_tool
 
@@ -129,14 +159,14 @@ label kitchen_1:
             annie "This will work wonderfully!"
             jump meat_cleaver
 
-        "Rolling pin" if choiceD == False:
-            $ choiceD = True
+        "Rolling pin" if choice_rolling == False:
+            $ choice_rolling = True
             "You're not strong enough to flatten him."
             jump find_tool
         
 
 label meat_cleaver:
-    scene bg bathroom
+    scene bathroom
     with fade
 
     annie "Alright, we're about to get started--please hold still!"
@@ -149,11 +179,12 @@ label meat_cleaver:
     jump front_door
 
 label front_door:
-
-    scene bg front door
+    scene livingroom_day
     with fade
 
     # show chad and brad, side by side
+    show chad at left
+    show brad at right
     
     annie "Hi, can I help you two?"
 
@@ -168,9 +199,6 @@ label front_door:
     jump couch_1
 
 label couch_1:
-
-    show bg couch
-    with fade
 
     chad "Allow me to get to the point. What do you know about Larry Russell?"
     chad "Some of his acquaintances contacted our station to report that he's gone missing, and they also say that he recently booked a short-term rental at this address."
@@ -225,22 +253,28 @@ label bathroom_fail:
 
     chad "Brad ... you actually did something helpful for once. I--I think I might cry."
 
+    scene black_screen
+    with fade
+
     "No getting out of this one. Brad and Chad arrest you on the spot as their prime suspect."
+
+    scene livingroom_day
+    with fade
 
     jump brad_bathroom
 
 label bathroom_success:
-    scene bg bathroom
+    scene bathroom
     with fade
 
     # task: enter the bathroom and pull the shower curtain
-    $ choiceA = False
-    $ choiceC = False
+    $ choice_fresh = False
+    $ choice_flush = False
     menu pull_shower_curtain:
         "Larry's still lying there in the bathtub."
 
-        "Spray some air freshener." if choiceA == False:
-            $ choiceA = True
+        "Spray some air freshener." if choice_fresh == False:
+            $ choice_fresh = True
             "Not strong enough. The body is still pretty visible."
             jump pull_shower_curtain
 
@@ -250,9 +284,9 @@ label bathroom_success:
             with fade
             jump couch_2
 
-        "Flush Larry's parts down the toilet." if choiceC == False:
+        "Flush Larry's parts down the toilet." if choice_flush == False:
             "They won't fit. Maybe after some hydrofluoric acid ..."
-            $ choiceC = True
+            $ choice_flush = True
             jump pull_shower_curtain
 
     jump couch_2
@@ -291,20 +325,20 @@ label couch_2:
     chad "No, Brad, we don't. We've discussed this before. If you would just--"
 
     # task: get the arms and put them in a trashbag
-    $ choiceA = False
-    $ choiceB = False
+    $ choice_question = False
+    $ choice_talk = False
     menu get_arms:
         "They've been talking for a while ..."
 
-        "Ask a question." if choiceA == False:
-            $ choiceA = True
+        "Ask a question." if choice_question == False:
+            $ choice_question = True
             annie "Sorry to interject, but how do you two feel about our current economic and political system?"
             "Brad and Chad turn to look at you, their faces blank."
             "With no explanation, they arrest you for asking questions."
             jump get_arms
 
-        "Just let them talk." if choiceB == False:
-            $ choiceB = True
+        "Just let them talk." if choice_talk == False:
+            $ choice_talk = True
             "They keep talking."
             "..."
             "You die of boredom."
@@ -359,7 +393,7 @@ label dispose_arms:
 
 label kitchen_blender:
     
-    scene bg kitchen       # change background to kitchen
+    scene kitchen       # change background to kitchen
     with fade
 
     "You take Larry's torso from the bathtub and bring it to the kitchen."
@@ -388,7 +422,8 @@ label kitchen_blender:
 
 label couch_3:
 
-    scene couch
+    scene livingroom_day
+    with fade
 
     annie "Here we go, fresh protein for the pup next door."
 
@@ -438,7 +473,7 @@ label kitchen_3:
 
 label couch_4:
 
-    scene couch
+    scene livingroom_day
     with fade
 
     annie "Thank you, Brad, and thank you, Chad. You two are truly, truly wonderful."
@@ -494,7 +529,14 @@ label chicken_fail:
     chad "I'm pretty sure buffalo chickens are endangered animals ..."
     chad "Ma'am, I'm gonna have to arrest you for hunting an endangered species."
 
+    scene black_screen
+    with fade
+
     "You're arrested on account of endangering near-extinct buffalo chickens."
+
+    scene kitchen
+    with fade
+
     jump what_meat
 
 label crocodile_fail:
@@ -511,7 +553,13 @@ label crocodile_fail:
 
     brad "We arrest them! Right, Chad?"
 
+    scene black_screen
+    with fade
+
     "They arrest you for being suspicious."
+
+    scene kitchen
+    with fade
 
     jump what_meat
 
@@ -586,12 +634,12 @@ label wrap_legs:
 
 label ending:
 
-    scene bg livingroom day
+    scene livingroom_day
     with fade
 
     annie "Works every time."
     annie "Now, time to brew up a nice cup of tea."
 
-    "the end."
+    "The End."
         
     return
