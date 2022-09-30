@@ -7,25 +7,38 @@ define mystery = Character("?")
 define chad = Character("Chad")
 define brad = Character("Brad")
 
-# Declare audio
+# Declare music
 define opening_theme = "<loop 0.0>audio/OpeningMet.wav"
 define main_theme = "<loop 0.0>audio/MainMETTheme.wav"
+
+# Declare sound effects
 
 # Declare images
 image livingroom_night = "images/livingroom_night.PNG"
 image livingroom_dawn = "images/livingroom_dawn.PNG"
 image livingroom_day = "images/livingroom_day.PNG"
-# image bathroom = 
+image bathroom_larry = "images/bathroom_larry.PNG"
+image bathroom_chopped = "images/bathroom_chopped.PNG"
+image bathroom_curtain = "images/bathroom_curtain.PNG"
+image spooktober_logo = "images/spooktober_logo.PNG"
 # image kitchen = 
 
 # Declare character art
-# image larry_scared = 
+# image larry_scared
+# image chad = "images/bathroom_curtain.PNG"
+# image brad
 
 init:
     $ screen_left = Position(xpos=0.3, ypos=1.0)
     $ screen_right = Position(xpos=0.7, ypos=1.0)
 
 label start:
+    scene spooktober_logo
+    with fade
+    pause 3.0
+    jump night
+
+label night:
     play music opening_theme
 
     scene livingroom_night
@@ -178,7 +191,7 @@ label meat_cleaver:
 
     scene bathroom_chopped
     with fade
-    
+
     # sound: doorbell, pounding on door
 
     annie "Oh, that must be the police! I've been expecting them. Sit tight, Larry, will you?"
@@ -246,7 +259,7 @@ label bathroom_fail:
 
     annie "Well, I was away visting my son, so I don't know exactly when."
 
-    show brad   # brad returns
+    show brad at screen_right  # brad returns
 
     brad "Hey, Chad, I think I found our guy."
 
@@ -267,18 +280,20 @@ label bathroom_fail:
 
     scene livingroom_day
     with fade
+    show chad at screen_left
+    show brad at screen_right
 
     jump brad_bathroom
 
 label bathroom_success:
-    scene bathroom
+    scene bathroom_chopped
     with fade
 
     # task: enter the bathroom and pull the shower curtain
     $ choice_fresh = False
     $ choice_flush = False
     menu pull_shower_curtain:
-        "Larry's still lying there in the bathtub."
+        "Larry--what's left of Larry--is still lying there in the bathtub."
 
         "Spray some air freshener." if choice_fresh == False:
             $ choice_fresh = True
@@ -286,9 +301,9 @@ label bathroom_success:
             jump pull_shower_curtain
 
         "Pull the shower curtain.":
-            annie "That should do it! They won't notice Larry now."
-            scene bg bathroom shower curtain    # change art for shower curtain
+            scene bathroom_curtain   # change art for shower curtain
             with fade
+            annie "That should do it! They won't notice Larry now."
             jump couch_2
 
         "Flush Larry's parts down the toilet." if choice_flush == False:
@@ -299,6 +314,12 @@ label bathroom_success:
     jump couch_2
 
 label couch_2:
+
+    scene livingroom_day
+    with fade
+
+    show chad at screen_left
+    show brad at screen_right
 
     annie "Alright, please go ahead!"
 
@@ -315,7 +336,7 @@ label couch_2:
     annie "Hmm, I'm not sure. His rental contract stated that he just needed to vacate the property by midnight."
     annie "I didn't see him move out, but he did return his set of keys on time."
 
-    show brad
+    show brad at screen_right
 
     brad "Hey Chad, did you get aroun' to askin' my list of questions yet?"
 
@@ -341,22 +362,49 @@ label couch_2:
             $ choice_question = True
             annie "Sorry to interject, but how do you two feel about our current economic and political system?"
             "Brad and Chad turn to look at you, their faces blank."
-            "With no explanation, they arrest you for asking questions."
-            jump get_arms
+            jump sus_arrest
 
         "Just let them talk." if choice_talk == False:
             $ choice_talk = True
             "They keep talking."
-            "..."
-            "You die of boredom."
-            jump get_arms
+            jump die_boredom
 
         "Slip away.":
             "This is your chance to get rid of some evidence."
             "You go to the bathroom, put Larry's arms in a trashbag, and return. Your absence goes unnoticed."
             jump dispose_arms
 
+label sus_arrest:
+    scene black_screen
+    with fade
+
+    "With no explanation, they arrest you for asking questions."
+
+    scene livingroom_day
+    with fade
+    show chad at screen_left
+    show brad at screen_right
+    jump get_arms
+
+label die_boredom:
+    scene black_screen
+    with fade
+
+    "..."
+    "You die of boredom."
+
+    scene livingroom_day
+    with fade
+    show chad at screen_left
+    show brad at screen_right
+    jump get_arms
+
 label dispose_arms:
+    scene livingroom_day
+    with fade
+
+    show chad at screen_left
+    show brad at screen_right
 
     chad "If we're going to make any kind of progress, I need you to--"
 
@@ -432,6 +480,9 @@ label couch_3:
     scene livingroom_day
     with fade
 
+    show chad at screen_left
+    show brad at screen_right
+
     annie "Here we go, fresh protein for the pup next door."
 
     chad "I really don't think feeding dogs is part of the protocol."
@@ -445,6 +496,9 @@ label couch_3:
 
     brad "I'll even go with you to help!"
 
+    hide chad
+    hide brad
+
     "Now's a good time to get rid of Larry's head."
 
     jump kitchen_3
@@ -453,6 +507,8 @@ label kitchen_3:
 
     scene kitchen
     with fade
+
+    "You bring Larry's head into the kitchen."
 
     # task: bake the head into something
     $ choice_pie = False
@@ -482,6 +538,8 @@ label couch_4:
 
     scene livingroom_day
     with fade
+    show chad at screen_left
+    show brad at screen_right
 
     annie "Thank you, Brad, and thank you, Chad. You two are truly, truly wonderful."
     annie "It makes me feel at ease to know that such diligent officers are out protecting the streets."
@@ -505,6 +563,8 @@ label kitchen_4:
 
     scene kitchen
     with fade
+    show chad at screen_left
+    show brad at screen_right
 
     "You bring Larry's legs into the kitchen and haul them onto the counter."
 
@@ -543,6 +603,8 @@ label chicken_fail:
 
     scene kitchen
     with fade
+    show chad at screen_left
+    show brad at screen_right
 
     jump what_meat
 
@@ -567,6 +629,8 @@ label crocodile_fail:
 
     scene kitchen
     with fade
+    show chad at screen_left
+    show brad at screen_right
 
     jump what_meat
 
