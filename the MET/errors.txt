@@ -2,13 +2,13 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 24: expected '=' not found.
-    image larry_scared
-                      ^
+File "game/script.rpy", line 11: invalid syntax
+    "<loop 0.0>audio/OpeningMet.wav" volume 0.8
+                                      ^
 
-File "game/script.rpy", line 26: expected '=' not found.
-    image brad
-              ^
+File "game/script.rpy", line 12: invalid syntax
+    "<loop 0.0>audio/MainMETTheme.wav" volume 0.8
+                                        ^
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Thu Sep 29 21:27:03 2022
+Fri Sep 30 16:11:56 2022

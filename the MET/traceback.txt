@@ -5,21 +5,21 @@ While running game code:
     $ ui.interact()
   File "renpy/common/00gamemenu.rpy", line 170, in <module>
     $ ui.interact()
-  File "game/screens.rpy", line 711, in execute
+  File "game/screens.rpy", line 712, in execute
     screen preferences():
-  File "game/screens.rpy", line 711, in execute
+  File "game/screens.rpy", line 712, in execute
     screen preferences():
-  File "game/screens.rpy", line 715, in execute
+  File "game/screens.rpy", line 716, in execute
     use game_menu(_("Preferences"), scroll="viewport"):
-  File "game/screens.rpy", line 416, in execute
+  File "game/screens.rpy", line 417, in execute
     screen game_menu(title, scroll=None, yinitial=0.0):
-  File "game/screens.rpy", line 416, in execute
+  File "game/screens.rpy", line 417, in execute
     screen game_menu(title, scroll=None, yinitial=0.0):
-  File "game/screens.rpy", line 420, in execute
+  File "game/screens.rpy", line 421, in execute
     if main_menu:
-  File "game/screens.rpy", line 423, in execute
+  File "game/screens.rpy", line 424, in execute
     add gui.game_menu_background
-  File "game/screens.rpy", line 423, in <module>
+  File "game/screens.rpy", line 424, in <module>
     add gui.game_menu_background
 AttributeError: 'StoreModule' object has no attribute 'game_menu_background'
 
@@ -55,25 +55,25 @@ Full traceback:
     self.update()
   File "/Users/irenegeng/Documents/renpy-8.0.3-sdk/renpy/display/screen.py", line 653, in update
     self.screen.function(**self.scope)
-  File "game/screens.rpy", line 711, in execute
+  File "game/screens.rpy", line 712, in execute
     screen preferences():
-  File "game/screens.rpy", line 711, in execute
+  File "game/screens.rpy", line 712, in execute
     screen preferences():
-  File "game/screens.rpy", line 715, in execute
+  File "game/screens.rpy", line 716, in execute
     use game_menu(_("Preferences"), scroll="viewport"):
-  File "game/screens.rpy", line 416, in execute
+  File "game/screens.rpy", line 417, in execute
     screen game_menu(title, scroll=None, yinitial=0.0):
-  File "game/screens.rpy", line 416, in execute
+  File "game/screens.rpy", line 417, in execute
     screen game_menu(title, scroll=None, yinitial=0.0):
-  File "game/screens.rpy", line 420, in execute
+  File "game/screens.rpy", line 421, in execute
     if main_menu:
-  File "game/screens.rpy", line 423, in execute
+  File "game/screens.rpy", line 424, in execute
     add gui.game_menu_background
-  File "game/screens.rpy", line 423, in <module>
+  File "game/screens.rpy", line 424, in <module>
     add gui.game_menu_background
 AttributeError: 'StoreModule' object has no attribute 'game_menu_background'
 
 macOS-10.16-x86_64-i386-64bit x86_64
 Ren'Py 8.0.3.22090809
 the MET 1.0
-Fri Sep 30 15:33:42 2022
+Fri Sep 30 16:39:55 2022

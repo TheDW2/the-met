@@ -2,24 +2,29 @@
 
 # Declare characters
 define larry = Character("Larry")
-define annie = Character("Annie")
-define mystery = Character("?")
-define chad = Character("Chad")
-define brad = Character("Brad")
+define annie = Character("Annie", color="#e30202")
+define mystery = Character("?", color="#e30202")
+define chad = Character("Chad", color="#fcba03")
+define brad = Character("Brad", color="#0285e3")
 
 # Declare music
 define opening_theme = "<loop 0.0>audio/OpeningMet.wav"
 define main_theme = "<loop 0.0>audio/MainMETTheme.wav"
-define arrival = "<from 3.0 to 5.0>audio/Arrival.wav"
+
+# Declare sound effects
+define arrival = "audio/Arrival.wav"
+define blender = "audio/Blender.wav"
 define body_thud = "audio/BodyThud.wav"
+define chompa = "audio/Chompa.wav"
+define ding = "audio/Ding.wav"
 define drink = "audio/Drink.wav"
 define impact_crunch = "audio/ImpactCrunch.wav"
+define poik = "audio/Poik.wav"
 define saw = "audio/Saw.wav"
 define shower_curtain_sound = "audio/ShowerCurtainPull.wav"
 define siren = "audio/Siren.wav"
 define spray = "audio/Spray.wav"
-
-# Declare sound effects
+define toilet_flush = "audio/ToiletFlush.wav"
 
 # Declare images
 image livingroom_night = "images/livingroom_night.PNG"
@@ -48,7 +53,7 @@ label start:
     jump night
 
 label night:
-    play music opening_theme
+    play music opening_theme volume 0.5
 
     scene livingroom_night
     with fade
@@ -61,7 +66,7 @@ label night:
     larry "I'll give you anything--money, you want money? I'll give you all the money you want!"
     larry "I'll give you anything you want, just tell me what you want! I'm begging you ... I have a family!"
 
-    mystery "You should have thought of them before messing with my family."
+    mystery "You should have thought of them before messing with my granddaughter."
 
     larry "No, no, don't do this! My daughter--"
 
@@ -97,18 +102,21 @@ label daytime:
         "You find a bottle of stain remover."
 
         "Offer Larry a drink." if choice_larry == False:
+            play sound click
             $ choice_larry = True
             play sound drink
             "His teeth are now cleaner than ever! And he's hydrated."
             jump stain_remover
         
         "Drink it yourself." if choice_yourself == False:
+            play sound click
             $ choice_yourself = True
             play sound drink
             "Tastes like orange juice. You get a stomach ache."
             jump stain_remover
 
         "Scrub the carpet.":
+            play sound click
             jump clean_carpet
 
 label clean_carpet:
@@ -149,10 +157,11 @@ label outside_fail:
 
     "The body is heavy, but you manage to push it out the front door."
     
-    play sound siren
+    play music siren noloop
 
     "Police officers see that you're in possession of a life-size human piñata and arrest you for suspicious activity."
 
+    play music main_theme
     scene livingroom_dawn
     with fade
 
@@ -329,7 +338,7 @@ label bathroom_success:
             jump pull_shower_curtain
 
         "Pull the shower curtain.":
-            play sound pull_shower_curtain
+            play sound shower_curtain_sound
             scene bathroom_curtain   # change art for shower curtain
             with fade
             annie "That should do it! They won't notice Larry now."
@@ -365,6 +374,7 @@ label couch_2:
     annie "Hmm, I'm not sure. His rental contract stated that he just needed to vacate the property by midnight."
     annie "I didn't see him move out, but he did return his set of keys on time."
 
+    play sound toilet_flush
     show brad at screen_right
 
     brad "Hey Chad, did you get aroun' to askin' my list of questions yet?"
@@ -489,6 +499,7 @@ label kitchen_blender:
         "How can you make some fresh ground meat for your neighbor's dog?"
 
         "Use the blender.":
+            play sound blender
             "You stuff Larry's entire torso into your industrial-size blender."
             annie "There we go, a fresh, healthy meal!"
             jump couch_3
@@ -595,6 +606,7 @@ label kitchen_4:
     show chad at screen_left
     show brad at screen_right
 
+    play sound poik
     "You bring Larry's legs into the kitchen and haul them onto the counter."
 
     # task: convince police that it's just fish
@@ -628,9 +640,10 @@ label chicken_fail:
     scene black_screen
     with fade
 
-    play sound siren
+    play music siren noloop
     "You're arrested on account of endangering near-extinct buffalo chickens."
 
+    play music main_theme
     scene kitchen
     with fade
     show chad at screen_left
@@ -655,9 +668,10 @@ label crocodile_fail:
     scene black_screen
     with fade
 
-    play sound siren
+    play music siren noloop
     "They arrest you for being suspicious."
 
+    play music main_theme
     scene kitchen
     with fade
     show chad at screen_left
@@ -677,6 +691,7 @@ label wrap_legs:
     brad "Honestly, I'm gettin' pretty hungry myself, just thinkin' about barbeques."
 
     # ding sound
+    play sound ding
 
     if choice_pie == True:
         annie "Oh! I nearly forgot about my pie! Wait one moment, please."
@@ -691,7 +706,9 @@ label wrap_legs:
 
         annie "Please, I insist! I've been told that my meat pies are fantastic."
 
-        # brad, chad enjoy the pie
+        play sound chompa
+        "Brad and Chad enjoy the pie."
+
     elif choice_cake == True:
         annie "Oh! I nearly forgot about my cake! Wait one moment, please."
 
@@ -705,7 +722,9 @@ label wrap_legs:
 
         annie "Please, I insist! I've been told that my cakes are fantastic."
 
-        # brad, chad enjoy the cake
+        play sound chompa
+        "Brad and Chad enjoy the cake."
+
     elif choice_cupcakes == True:
         annie "Oh! I nearly forgot about my cupcakes! Wait one moment, please."
 
@@ -719,7 +738,8 @@ label wrap_legs:
 
         annie "Please, I insist! I've been told that my cupcakes are fantastic."
 
-        # brad, chad enjoy the cupcakes
+        play sound chompa
+        "Brad and Chad enjoy the cupcakes."
 
     brad "That was delicious!"
     brad "Well, I guess we had better get goin' back to the station. Did we get all the evidence we needed Chad?"
@@ -742,6 +762,18 @@ label ending:
     annie "Works every time."
     annie "Now, time to brew up a nice cup of tea."
 
-    "The End."
+    jump credits
+
+label credits:
+    scene black_screen
+    with fade
+
+    show text "The End."
+
+    $ renpy.pause(2.0)
+
+    show text "Art by Natasha Cruz\n" + "Sound design & story by Jonathan Chung; check out my other work at TheDW2 on itch.io\n" + "Programming & story by Dao Geng"
+
+    $ renpy.pause(4.0)
         
     return

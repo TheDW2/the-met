@@ -23,7 +23,7 @@ init python:
 ## The colors of text in the interface.
 
 ## An accent color used throughout the interface to label and highlight text.
-define gui.accent_color = '#0099cc'
+define gui.accent_color = '#ffffff'
 
 ## The color used for a text button when it is neither selected nor hovered.
 define gui.idle_color = '#888888'
@@ -86,7 +86,7 @@ define gui.title_text_size = 75
 
 ## The images used for the main and game menus.
 define gui.main_menu_background = "images/livingroom_dawn.PNG"
-# define gui.game_menu_background = "gui/game_menu.png"
+define gui.game_menu_background = "gui/game_menu.png"
 
 
 ## Dialogue ####################################################################
