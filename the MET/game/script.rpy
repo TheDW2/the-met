@@ -21,6 +21,10 @@ image livingroom_day = "images/livingroom_day.PNG"
 # Declare character art
 # image larry_scared = 
 
+init:
+    $ screen_left = Position(xpos=0.3, ypos=1.0)
+    $ screen_right = Position(xpos=0.7, ypos=1.0)
+
 label start:
     play music opening_theme
 
@@ -123,7 +127,7 @@ label outside_fail:
 
 label bathroom_1:
 
-    scene bathroom
+    scene bathroom_larry
     with fade
 
     annie "Oh dear, we've got a bit of a pickle. You don't quite fit inside the bathtub, Larry."
@@ -166,12 +170,15 @@ label kitchen_1:
         
 
 label meat_cleaver:
-    scene bathroom
+    scene bathroom_larry
     with fade
 
     annie "Alright, we're about to get started--please hold still!"
     annie "There you go, dear! Now you fit inside the bathtub very nicely."
 
+    scene bathroom_chopped
+    with fade
+    
     # sound: doorbell, pounding on door
 
     annie "Oh, that must be the police! I've been expecting them. Sit tight, Larry, will you?"
@@ -183,8 +190,8 @@ label front_door:
     with fade
 
     # show chad and brad, side by side
-    show chad at left
-    show brad at right
+    show chad at screen_left
+    show brad at screen_right
     
     annie "Hi, can I help you two?"
 
